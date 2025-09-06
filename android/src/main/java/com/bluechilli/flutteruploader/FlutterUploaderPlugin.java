@@ -15,7 +15,6 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,15 +42,8 @@ public class FlutterUploaderPlugin implements FlutterPlugin, StatusListener {
       new CachingStreamHandler<>();
   private LiveData<List<WorkInfo>> workInfoLiveData;
 
-  public static void registerWith(Registrar registrar) {
-    final FlutterUploaderPlugin plugin = new FlutterUploaderPlugin();
-    plugin.startListening(registrar.context(), registrar.messenger());
-    registrar.addViewDestroyListener(
-        view -> {
-          plugin.stopListening();
-          return false;
-        });
-  }
+  // Remove registerWith as it's not needed with the new plugin API
+  // The plugin will be registered through onAttachedToEngine
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
